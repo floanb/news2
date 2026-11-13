@@ -1,45 +1,6 @@
-/* =====================================================================
-   sw.js — Service Worker: guarda los archivos de la app en el teléfono
-   para que funcione SIN INTERNET (por ejemplo, en un piso del hospital
-   con mala señal).
-
-   Cada vez que cambies algún archivo de la app, sube el número de
-   versión para que los teléfonos descarguen la versión nueva.
-   ===================================================================== */
-
-const VERSION = 'news2-v1';
-
-const ARCHIVOS = [
-  './',
-  './index.html',
-  './styles.css',
-  './news2.js',
-  './app.js',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/apple-touch-icon.png',
-];
-
-// 1. Instalación: descarga y guarda todos los archivos
-self.addEventListener('install', evento => {
-  evento.waitUntil(caches.open(VERSION).then(cache => cache.addAll(ARCHIVOS)));
-  self.skipWaiting();
-});
-
-// 2. Activación: borra versiones viejas
-self.addEventListener('activate', evento => {
-  evento.waitUntil(
-    caches.keys().then(claves =>
-      Promise.all(claves.filter(c => c !== VERSION).map(c => caches.delete(c)))
-    )
-  );
-  self.clients.claim();
-});
-
-// 3. Cada petición: primero busca en la caché; si no está, va a internet
-self.addEventListener('fetch', evento => {
-  evento.respondWith(
-    caches.match(evento.request).then(guardado => guardado || fetch(evento.request))
-  );
-});
+/* VitaScore: aumentar la versión de caché al publicar cambios. */
+const VERSION = 'vitascore-v3-20261112';
+const ARCHIVOS = ['./','./index.html','./styles.css','./news2.js','./app.js','./manifest.json','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
+self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS))); self.skipWaiting(); });
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION && (k.startsWith('news2-') || k.startsWith('vitascore-'))).map(k => caches.delete(k))))); self.clients.claim(); });
+self.addEventListener('fetch', e => { if (e.request.method !== 'GET' || new URL(e.request.url).origin !== self.location.origin) return; e.respondWith(fetch(e.request).then(response => { if (response.ok) {const copy=response.clone(); caches.open(VERSION).then(cache => cache.put(e.request, copy));} return response; }).catch(() => caches.match(e.request))); });

@@ -1,30 +1,12 @@
 {
-  "name": "Florencia Angelini Barchini", 
-  "short_name": "Flo Angelini",
-  "description": "Calculadora educativa de la escala de alerta temprana NEWS2",
-  "lang": "es-MX",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#f3f6fa",
-  "theme_color": "#0b5394",
+  "name": "VitaScore — Alerta temprana NEWS2",
+  "short_name": "VitaScore",
+  "description": "Calculadora educativa de la escala NEWS2, desarrollada por Florencia Angelini Barchini",
+  "lang": "es-MX", "start_url": "./", "scope": "./", "display": "standalone", "orientation": "portrait",
+  "background_color": "#F7F2FB", "theme_color": "#63358F",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
   ]
 }

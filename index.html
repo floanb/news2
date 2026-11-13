@@ -1,127 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Alerta NEWS2</title>
-  <meta name="description" content="Calculadora educativa de NEWS2 para signos vitales">
-
-  <!-- PWA: manifiesto e íconos -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0b5394">
-  <link rel="icon" href="icons/icon-192.png">
-
-  <!-- iPhone: ícono y modo pantalla completa al instalar -->
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="NEWS2">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="VitaScore, aplicación educativa de evaluación NEWS2">
+  <meta name="theme-color" content="#63358F"><meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VitaScore"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>VitaScore · Alerta temprana NEWS2</title>
+  <link rel="manifest" href="manifest.json"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="barra">
-    <h1>Alerta NEWS2</h1>
-    <p>Escala de alerta temprana · Signos vitales</p>
-  </header>
+  <section class="bienvenida" id="bienvenida" aria-labelledby="titulo-bienvenida">
+    <div class="bienvenida-contenido">
+      <img src="icons/icon-192.png" class="bienvenida-logo" alt="Corazón con pulso de VitaScore" width="108" height="108">
+      <p class="kicker">INGENIERÍA BIOMÉDICA</p>
+      <h1 id="titulo-bienvenida">VitaScore</h1>
+      <p class="bienvenida-descripcion">Una forma clara de explorar la escala de alerta temprana NEWS2.</p>
+      <div class="bienvenida-nota"><strong>Uso exclusivamente educativo.</strong> No es software clínico validado ni debe utilizarse con pacientes reales.</div>
+      <button type="button" class="boton-principal" id="comenzar">Comenzar evaluación <span aria-hidden="true">→</span></button>
+      <p class="firma-bienvenida">Florencia Angelini Barchini</p>
+    </div>
+  </section>
 
-  <div class="aviso">
-    <strong>Uso educativo.</strong> Software de práctica; no sustituye el juicio clínico ni es un dispositivo médico validado.
+  <div id="aplicacion" class="oculto">
+    <header class="barra">
+      <div class="barra-interior"><img src="icons/icon-192.png" width="46" height="46" alt="" class="logo-header">
+        <div><h1>VitaScore</h1><p>Sistema de alerta temprana NEWS2</p></div>
+        <button type="button" id="volver-inicio" class="boton-icono" aria-label="Volver a bienvenida" title="Volver a bienvenida">⌂</button>
+      </div>
+    </header>
+    <main>
+      <div class="aviso"><strong>Uso educativo.</strong> Práctica académica; no usar para decisiones clínicas ni con pacientes reales.</div>
+      <section class="panel formulario-panel" aria-labelledby="titulo-evaluacion">
+        <div class="titulo-seccion"><div><span class="kicker">EVALUACIÓN</span><h2 id="titulo-evaluacion">Nueva evaluación</h2><p>Ingresa los signos vitales para calcular NEWS2.</p></div><span class="etiqueta-lavanda">7 parámetros</span></div>
+        <form id="formulario" novalidate>
+          <label class="campo identificador"><span>Identificador de cama <small>(opcional; no uses nombres)</small></span><input id="cama" type="text" maxlength="12" placeholder="Ej. Cama 204" autocomplete="off"></label>
+          <h3 class="subtitulo">Signos vitales</h3>
+          <div class="rejilla">
+            <label class="campo tarjeta-campo"><span>Frecuencia respiratoria</span><input id="fr" type="number" inputmode="numeric" placeholder="18" required><small>resp/min</small><em class="error" data-para="fr"></em></label>
+            <label class="campo tarjeta-campo"><span>SpO₂</span><input id="spo2" type="number" inputmode="numeric" placeholder="98" required><small>%</small><em class="error" data-para="spo2"></em></label>
+            <label class="campo tarjeta-campo"><span>Presión sistólica</span><input id="tas" type="number" inputmode="numeric" placeholder="120" required><small>mmHg</small><em class="error" data-para="tas"></em></label>
+            <label class="campo tarjeta-campo"><span>Frecuencia cardiaca</span><input id="fc" type="number" inputmode="numeric" placeholder="75" required><small>lpm</small><em class="error" data-para="fc"></em></label>
+            <label class="campo tarjeta-campo"><span>Temperatura</span><input id="temp" type="number" inputmode="decimal" step="0.1" placeholder="36.8" required><small>°C</small><em class="error" data-para="temp"></em></label>
+          </div>
+          <fieldset class="campo opciones"><legend>Oxígeno suplementario</legend><div class="segmentos" data-grupo="oxigeno"><button type="button" data-valor="no" class="activo" aria-pressed="true">Aire ambiente</button><button type="button" data-valor="si" aria-pressed="false">Con oxígeno</button></div></fieldset>
+          <fieldset class="campo opciones"><legend>Nivel de conciencia (ACVPU)</legend><div class="segmentos conciencia" data-grupo="conciencia"><button type="button" data-valor="A" class="activo" aria-pressed="true" title="Alerta">A</button><button type="button" data-valor="C" aria-pressed="false" title="Confusión nueva">C</button><button type="button" data-valor="V" aria-pressed="false" title="Responde a la voz">V</button><button type="button" data-valor="P" aria-pressed="false" title="Responde al dolor">P</button><button type="button" data-valor="U" aria-pressed="false" title="No responde">U</button></div><small class="ayuda">A Alerta · C Confusión nueva · V Voz · P Dolor · U No responde</small></fieldset>
+          <label class="casilla"><input id="escala2" type="checkbox"><span>Usar Escala 2 de SpO₂ (solo por indicación médica en insuficiencia respiratoria hipercápnica)</span></label>
+          <button type="submit" class="boton-principal">♡ &nbsp;Calcular NEWS2</button>
+        </form>
+      </section>
+
+      <section id="resultado" class="panel resultado oculto" aria-live="polite">
+        <div class="titulo-seccion"><div><span class="kicker">EVALUACIÓN COMPLETADA</span><h2>Resultado NEWS2</h2></div><span class="icono-seccion">♡</span></div>
+        <div class="puntaje"><span class="puntaje-label">PUNTAJE TOTAL</span><span id="total">0</span><small>puntos NEWS2</small><div id="etiqueta" class="riesgo-etiqueta"></div></div>
+        <div class="respuesta"><strong>Respuesta clínica sugerida</strong><p id="respuesta"></p></div>
+        <details class="desglose"><summary>Desglose de los 7 parámetros <span aria-hidden="true">⌄</span></summary><table class="detalle"><tbody id="detalle"></tbody></table></details>
+        <button type="button" id="guardar" class="boton-principal">Guardar evaluación</button>
+        <button type="button" id="nueva-evaluacion" class="boton-secundario">Nueva evaluación</button>
+        <p id="mensaje-guardar" class="mensaje-estado" role="status"></p>
+      </section>
+
+      <section class="panel historial" aria-labelledby="titulo-historial"><div class="titulo-seccion"><div><span class="kicker">REGISTROS LOCALES</span><h2 id="titulo-historial">Historial de evaluaciones</h2><p>Guardado únicamente en este dispositivo.</p></div><span class="icono-seccion">◷</span></div>
+        <ul id="lista-historial"><li class="vacio">Todavía no hay evaluaciones guardadas.</li></ul>
+      </section>
+    </main>
+    <footer>Desarrollado por <strong>Florencia Angelini Barchini</strong><span>Ingeniería Biomédica · Uso educativo</span><span>Referencia: Royal College of Physicians, NEWS2 (2017)</span></footer>
   </div>
-
-  <main>
-    <form id="formulario" novalidate>
-      <label class="campo">
-        <span>Cama / ID (opcional, sin nombre del paciente)</span>
-        <input id="cama" type="text" maxlength="12" placeholder="Ej. 3B-12" autocomplete="off">
-      </label>
-
-      <div class="rejilla">
-        <label class="campo">
-          <span>Frec. respiratoria <small>resp/min</small></span>
-          <input id="fr" type="number" inputmode="numeric" placeholder="16" required>
-          <em class="error" data-para="fr"></em>
-        </label>
-
-        <label class="campo">
-          <span>SpO₂ <small>%</small></span>
-          <input id="spo2" type="number" inputmode="numeric" placeholder="97" required>
-          <em class="error" data-para="spo2"></em>
-        </label>
-
-        <label class="campo">
-          <span>T/A sistólica <small>mmHg</small></span>
-          <input id="tas" type="number" inputmode="numeric" placeholder="120" required>
-          <em class="error" data-para="tas"></em>
-        </label>
-
-        <label class="campo">
-          <span>Frec. cardiaca <small>lpm</small></span>
-          <input id="fc" type="number" inputmode="numeric" placeholder="80" required>
-          <em class="error" data-para="fc"></em>
-        </label>
-
-        <label class="campo">
-          <span>Temperatura <small>°C</small></span>
-          <input id="temp" type="number" inputmode="decimal" step="0.1" placeholder="36.8" required>
-          <em class="error" data-para="temp"></em>
-        </label>
-      </div>
-
-      <fieldset class="campo">
-        <legend>¿Oxígeno suplementario?</legend>
-        <div class="segmentos" data-grupo="oxigeno">
-          <button type="button" data-valor="no" class="activo">Aire ambiente</button>
-          <button type="button" data-valor="si">Con oxígeno</button>
-        </div>
-      </fieldset>
-
-      <fieldset class="campo">
-        <legend>Nivel de conciencia (ACVPU)</legend>
-        <div class="segmentos" data-grupo="conciencia">
-          <button type="button" data-valor="A" class="activo" title="Alerta">A</button>
-          <button type="button" data-valor="C" title="Confusión nueva">C</button>
-          <button type="button" data-valor="V" title="Responde a la voz">V</button>
-          <button type="button" data-valor="P" title="Responde al dolor">P</button>
-          <button type="button" data-valor="U" title="No responde">U</button>
-        </div>
-        <small class="ayuda">A Alerta · C Confusión nueva · V Voz · P Dolor · U No responde</small>
-      </fieldset>
-
-      <label class="casilla">
-        <input id="escala2" type="checkbox">
-        <span>Usar Escala 2 de SpO₂ (solo EPOC con hipercapnia, por indicación médica)</span>
-      </label>
-
-      <button type="submit" class="boton-principal">Calcular NEWS2</button>
-    </form>
-
-    <section id="resultado" class="resultado oculto" aria-live="polite">
-      <div class="puntaje">
-        <span id="total">0</span>
-        <small>puntos</small>
-      </div>
-      <h2 id="etiqueta"></h2>
-      <p id="respuesta"></p>
-      <table class="detalle">
-        <tbody id="detalle"></tbody>
-      </table>
-      <button type="button" id="guardar" class="boton-secundario">Guardar en historial</button>
-    </section>
-
-    <section class="historial">
-      <h2>Historial en este teléfono</h2>
-      <ul id="lista-historial"><li class="vacio">Sin registros.</li></ul>
-      <button type="button" id="borrar" class="boton-texto">Borrar historial</button>
-    </section>
-  </main>
-
-  <footer>
-    Taller · Desarrollo de Software Médico · Ingeniería Biomédica<br>
-    Referencia: Royal College of Physicians, NEWS2 (2017)
-  </footer>
-
-  <script src="news2.js"></script>
-  <script src="app.js"></script>
+  <script src="news2.js"></script><script src="app.js"></script>
 </body>
 </html>
